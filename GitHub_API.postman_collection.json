@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "8a009597-a56e-4f4a-9fbf-2ea2df67cc3c",
+		"name": "GitHub_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25668957"
+	},
+	"item": [
+		{
+			"name": "Issues",
+			"item": [
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "Get_Single_Issue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Check status code\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function() {\r",
+											"    pm.expect(pm.response.code).equals(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is OK\", function() {\r",
+											"    pm.expect(pm.response.status, \"Status property\").equals(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check issue number\", ()=> {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.expect(body.number, \"Number property\").to.be.equal(1);\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/1",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"testnakov",
+										"test-nakov-repo",
+										"issues",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Single_Issue_Labels",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/1/labels",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"testnakov",
+										"test-nakov-repo",
+										"issues",
+										"1",
+										"labels"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_All_Issue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Check if response is an array of issues\", function() {\r",
+											"    const body = pm.response.json();\r",
+											"    console.log(\"BODY\", body);\r",
+											"    pm.expect(Array.isArray(body));\r",
+											"\r",
+											"for (let item of body) {\r",
+											"    pm.expect(typeof(item.title)).equals(\"string\");\r",
+											"    pm.expect(typeof(item.number)).equal(\"number\")\r",
+											"    pm.expect(item.number, \"Issue number property\").is.greaterThan(0);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"testnakov",
+										"test-nakov-repo",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "Post_Issue",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "DobromiraKozhuharova",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"My first issue\",\r\n    \"body\" : \"This issue was created in Postman\",\r\n    \"labels\": [\r\n        \"bug\", \"importance:high\", \"type:UI\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/repos/DobromiraKozhuharova/Postman/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"DobromiraKozhuharova",
+										"Postman",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "UPDATE",
+					"item": [
+						{
+							"name": "New Request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "DobromiraKozhuharova",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"My second issue\",\r\n    \"body\" : \"This issue was created and updated in Postman\",\r\n    \"labels\": [\r\n        \"bug\", \"importance:high\", \"type:UI\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/repos/DobromiraKozhuharova/Postman/issues/2",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"DobromiraKozhuharova",
+										"Postman",
+										"issues",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Repos",
+			"item": [
+				{
+					"name": "Get_Repos",
+					"item": [
+						{
+							"name": "Get_All_Repos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/users/DobromiraKozhuharova/repos",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"users",
+										"DobromiraKozhuharova",
+										"repos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Single_Repos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check repo name\", ()=> {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.expect(body.name, \"Name property\").equals(\"Postman\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/DobromiraKozhuharova/postman",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"DobromiraKozhuharova",
+										"postman"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
